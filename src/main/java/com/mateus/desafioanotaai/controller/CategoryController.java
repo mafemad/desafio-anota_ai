@@ -36,6 +36,12 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(categories);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryResponseDTO> getById(@PathVariable String id){
+        CategoryResponseDTO category = this.categoryService.getById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(category);
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<CategoryResponseDTO> update(@Valid @RequestBody UpdateCategoryDTO data,
                                                       @PathVariable String id){

@@ -36,6 +36,17 @@ public class CategoryService {
         )).toList();
     }
 
+    public CategoryResponseDTO getById(String id) {
+        Category category = this.categoryRepository.findById(id).orElseThrow(
+                () -> new CategoryNotFoundException("category with id " + id + " not found"));
+        return new CategoryResponseDTO(
+                category.getId(),
+                category.getTitle(),
+                category.getDescription(),
+                category.getOwnerId()
+        );
+    }
+
     public CategoryResponseDTO update(String id, UpdateCategoryDTO data) {
         Category category = this.categoryRepository.findById(id).orElseThrow(
                 () -> new CategoryNotFoundException("category with id " + id + " not found"));
@@ -61,4 +72,5 @@ public class CategoryService {
 
         this.categoryRepository.delete(category);
     }
+
 }
