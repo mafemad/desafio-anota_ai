@@ -47,6 +47,11 @@ public class CategoryService {
         );
     }
 
+    public Category getCategoryById(String id) {
+        return this.categoryRepository.findById(id).orElseThrow(
+                () -> new CategoryNotFoundException("category with id " + id + " not found"));
+    }
+
     public CategoryResponseDTO update(String id, UpdateCategoryDTO data) {
         Category category = this.categoryRepository.findById(id).orElseThrow(
                 () -> new CategoryNotFoundException("category with id " + id + " not found"));

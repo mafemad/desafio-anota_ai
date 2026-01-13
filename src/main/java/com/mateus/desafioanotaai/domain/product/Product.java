@@ -1,6 +1,7 @@
 package com.mateus.desafioanotaai.domain.product;
 
 import com.mateus.desafioanotaai.domain.category.Category;
+import com.mateus.desafioanotaai.domain.product.dto.CreateProductDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,4 +22,13 @@ public class Product {
     private Integer price;
     private String ownerId;
     private Category category;
+
+    public Product(
+    CreateProductDTO productDTO, Category category){
+        this.title = productDTO.title();
+        this.description = productDTO.description();
+        this.price = productDTO.price();
+        this.ownerId = productDTO.ownerId();
+        this.category = category;
+    }
 }
