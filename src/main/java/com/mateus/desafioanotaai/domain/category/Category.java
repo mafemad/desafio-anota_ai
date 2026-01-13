@@ -1,5 +1,6 @@
 package com.mateus.desafioanotaai.domain.category;
 
+import com.mateus.desafioanotaai.domain.category.dto.CreateCategoryDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,10 @@ public class Category {
     private String description;
 
     private String ownerId;
+
+    public Category(CreateCategoryDTO data) {
+        this.title = data.title();
+        this.description = data.description();
+        this.ownerId = data.ownerId();
+    }
 }
