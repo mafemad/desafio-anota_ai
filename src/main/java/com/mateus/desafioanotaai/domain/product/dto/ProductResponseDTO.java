@@ -8,6 +8,6 @@ public record ProductResponseDTO(
         String description,
         Integer price,
         String ownerId,
-        Category category
+         String category
 ) {
 }

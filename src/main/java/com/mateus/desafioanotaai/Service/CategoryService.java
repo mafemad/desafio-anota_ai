@@ -1,5 +1,7 @@
 package com.mateus.desafioanotaai.Service;
 
+import com.mateus.desafioanotaai.Service.aws.AwsSnsService;
+import com.mateus.desafioanotaai.Service.aws.MessageDTO;
 import com.mateus.desafioanotaai.domain.category.Category;
 import com.mateus.desafioanotaai.domain.category.dto.CategoryResponseDTO;
 import com.mateus.desafioanotaai.domain.category.dto.CreateCategoryDTO;
@@ -14,14 +16,18 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final AwsSnsService awsSnsService;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+
+    public CategoryService(CategoryRepository categoryRepository, AwsSnsService awsSnsService) {
         this.categoryRepository = categoryRepository;
+        this.awsSnsService = awsSnsService;
     }
 
     public CategoryResponseDTO insert(CreateCategoryDTO categoryDTO){
         Category newCategory = new Category(categoryDTO);
         this.categoryRepository.save(newCategory);
+        this.awsSnsService.publish(new MessageDTO(newCategory.toString()));
         return new CategoryResponseDTO(newCategory.getId(),newCategory.getTitle(),
                 newCategory.getDescription(),newCategory.getOwnerId());
     }
@@ -63,6 +69,7 @@ public class CategoryService {
             category.setDescription(data.description());
         }
         this.categoryRepository.save(category);
+        this.awsSnsService.publish(new MessageDTO(category.toString()));
         return new CategoryResponseDTO(
                 category.getId(),
                 category.getTitle(),

@@ -29,9 +29,9 @@ public class ProductService {
     public ProductResponseDTO create(CreateProductDTO data){
         Category category = this.categoryService.getCategoryById(data.categoryId());
 
-        Product newProduct = new Product(data,category);
+        Product newProduct = new Product(data);
         this.productRepository.save(newProduct);
-        this.awsSnsService.publish(new MessageDTO(newProduct.getOwnerId()));
+        this.awsSnsService.publish(new MessageDTO(newProduct.toString()));
         return new ProductResponseDTO(
                 newProduct.getId(),
                 newProduct.getTitle(),
@@ -72,10 +72,7 @@ public class ProductService {
                 () -> new ProductNotFoundException("product with id " + id + " not found"));
 
         if(data.categoryId() != null){
-            Category category = this.categoryService.getCategoryById(data.categoryId());
-            if(category != null){
-                product.setCategory(category);
-            }
+            product.setCategory(data.categoryId());
         }
 
         if(data.title() != null){
@@ -90,7 +87,7 @@ public class ProductService {
 
         this.productRepository.save(product);
 
-        this.awsSnsService.publish(new MessageDTO(product.getOwnerId()));
+        this.awsSnsService.publish(new MessageDTO(product.toString()));
         return new ProductResponseDTO(
                 product.getId(),
                 product.getTitle(),
