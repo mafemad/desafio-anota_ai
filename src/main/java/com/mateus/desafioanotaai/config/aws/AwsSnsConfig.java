@@ -20,7 +20,7 @@ public class AwsSnsConfig {
     private String catalogTopicArn;
 
     @Bean
-    public SnsClient amazonSnsBuilder(){
+    public SnsClient snsClient(){
         AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKeyId, secretAccessKey);
         return SnsClient.builder()
                 .credentialsProvider(() -> credentials)

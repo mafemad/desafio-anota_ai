@@ -1,5 +1,7 @@
 package com.mateus.desafioanotaai.Service;
 
+import com.mateus.desafioanotaai.Service.aws.AwsSnsService;
+import com.mateus.desafioanotaai.Service.aws.MessageDTO;
 import com.mateus.desafioanotaai.domain.category.Category;
 import com.mateus.desafioanotaai.domain.product.Product;
 import com.mateus.desafioanotaai.domain.product.dto.CreateProductDTO;
@@ -15,10 +17,12 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
+    private final AwsSnsService awsSnsService;
 
-    public ProductService(ProductRepository productRepository, CategoryService categoryService) {
+    public ProductService(ProductRepository productRepository, CategoryService categoryService, AwsSnsService awsSnsService) {
         this.productRepository = productRepository;
         this.categoryService = categoryService;
+        this.awsSnsService = awsSnsService;
     }
 
 
@@ -27,6 +31,7 @@ public class ProductService {
 
         Product newProduct = new Product(data,category);
         this.productRepository.save(newProduct);
+        this.awsSnsService.publish(new MessageDTO(newProduct.getOwnerId()));
         return new ProductResponseDTO(
                 newProduct.getId(),
                 newProduct.getTitle(),
@@ -82,7 +87,10 @@ public class ProductService {
         if(data.price() != null){
             product.setPrice(data.price());
         }
+
         this.productRepository.save(product);
+
+        this.awsSnsService.publish(new MessageDTO(product.getOwnerId()));
         return new ProductResponseDTO(
                 product.getId(),
                 product.getTitle(),
