@@ -82,6 +82,7 @@ public class CategoryService {
         Category category = this.categoryRepository.findById(id).orElseThrow(
                 () -> new CategoryNotFoundException("category with id " + id + " not found"));
 
+        this.awsSnsService.publish(new MessageDTO(category.deleteToString()));
         this.categoryRepository.delete(category);
     }
 

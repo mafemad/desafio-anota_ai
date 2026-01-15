@@ -101,6 +101,7 @@ public class ProductService {
     public void delete(String id){
         Product product = this.productRepository.findById(id).orElseThrow(
                 () -> new ProductNotFoundException("product with id " + id + " not found"));
+        this.awsSnsService.publish(new MessageDTO(product.deleteToString()));
         this.productRepository.delete(product);
     }
 }

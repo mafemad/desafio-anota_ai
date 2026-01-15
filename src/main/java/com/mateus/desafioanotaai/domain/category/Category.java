@@ -40,4 +40,14 @@ public class Category {
         jsonObject.put("type", "category");
         return jsonObject.toString();
     }
+
+    public String deleteToString(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", this.id);
+        jsonObject.put("title", this.title);
+        jsonObject.put("description", this.description);
+        jsonObject.put("ownerId", this.ownerId);
+        jsonObject.put("type", "delete-category");
+        return jsonObject.toString();
+    }
 }
